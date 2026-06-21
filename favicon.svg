@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="frame"><rect width="64" height="64" rx="14"/></clipPath>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.6" flood-color="#000" flood-opacity=".7"/>
+    </filter>
+  </defs>
+
+  <rect width="64" height="64" rx="14" fill="#171814"/>
+
+  <!-- Animated diagonal DNA background -->
+  <g clip-path="url(#frame)" opacity=".72" transform="rotate(-42 32 32)">
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="-18 0;18 0;-18 0" dur="5s" repeatCount="indefinite"/>
+      <path d="M-35 22c8-12 16-12 24 0s16 12 24 0 16-12 24 0 16 12 24 0 16-12 24 0 16 12 24 0" fill="none" stroke="#ff4d2e" stroke-width="4" stroke-linecap="round"/>
+      <path d="M-35 42c8 12 16 12 24 0s16-12 24 0 16 12 24 0 16-12 24 0 16 12 24 0 16-12 24 0" fill="none" stroke="#c8f04b" stroke-width="4" stroke-linecap="round"/>
+      <g stroke="#f2f0e8" stroke-width="1.7" opacity=".8">
+        <path d="M-27 30v4"/><path d="M-11 24v16"/><path d="M5 30v4"/><path d="M21 24v16"/><path d="M37 30v4"/><path d="M53 24v16"/><path d="M69 30v4"/><path d="M85 24v16"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Centered editorial monogram -->
+  <text x="31" y="43" text-anchor="middle" fill="#f2f0e8" stroke="#171814" stroke-width="2.5" paint-order="stroke" filter="url(#shadow)" font-family="Georgia, 'Times New Roman', serif" font-size="35" font-weight="700" font-style="italic" letter-spacing="-4">AK</text>
+</svg>
