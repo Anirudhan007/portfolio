@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Anirudhan Krishnan — bioengineer and machine learning researcher working across molecules, models, and medicine.">
   <meta name="theme-color" content="#f2f0e8">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="shortcut icon" href="favicon.svg">
   <title>Anirudhan Krishnan - Bio × AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -96,50 +98,3 @@
         <article class="job reveal"><h3>Fertility Diagnostics Intern</h3><div><p class="job-org">Inito · YC W19</p><p class="job-copy">Cut lateral-flow assay runtimes by 50% while preserving signal clarity through chemistry and material optimization.</p></div><time class="job-date">May — Jul 2025</time></article>
         <article class="job reveal"><h3>Translational Biology Intern</h3><div><p class="job-org">Aurigene Oncology Limited</p><p class="job-copy">Ran mammalian cell culture and in-vitro assays to evaluate drug response and support oncology discovery programs.</p></div><time class="job-date">May — Jun 2024</time></article>
       </div>
-    </div></section>
-    <section id="work"><div class="wrap">
-      <div class="section-head reveal"><span class="section-index">03 / Selected focus</span><h2>Problems worth<br><em>obsessing</em> over.</h2></div>
-      <div class="work-grid">
-        <article class="project reveal"><span class="project-num">01 / MODEL INTELLIGENCE</span><span class="project-arrow">↗</span><div><h3>Finding where AI fails</h3><p>End-to-end experiments that turn failure modes into signals—and signals into better systems.</p></div></article>
-        <article class="project reveal"><span class="project-num">02 / CLINICAL AI</span><span class="project-arrow">↗</span><div><h3>Agents for medicine</h3><p>Thoughtful automation for clinical operations, oncology strategy, and regulatory workflows.</p></div></article>
-        <article class="project reveal"><span class="project-num">03 / DIAGNOSTICS</span><span class="project-arrow">↗</span><div><h3>Faster answers</h3><p>Optimizing assay chemistry and materials to make diagnostics quicker without losing clarity.</p></div></article>
-        <article class="project reveal"><span class="project-num">04 / MOLECULAR SYSTEMS</span><span class="project-arrow">↗</span><div><h3>Simulating the invisible</h3><p>Computational tools for dynamics, docking, structure, and the molecular interactions beneath biology.</p></div></article>
-      </div>
-    </div></section>
-    <section class="education" id="education"><div class="wrap">
-      <div class="section-head reveal"><span class="section-index">04 / Education</span><h2>Built on<br><em>first principles.</em></h2></div>
-      <div class="edu-grid">
-        <article class="edu reveal"><span class="edu-year">Incoming · Winter 2026</span><div><h3>Heidelberg University</h3><p>M.Sc. Molecular Systems Science and Engineering (MSSE)</p></div></article>
-        <article class="edu reveal"><span class="edu-year">2022 — 2026 · CGPA 8.3/10</span><div><h3>IIT Roorkee</h3><p>B.Tech in Biosciences and Bioengineering · Top 5 in department</p></div></article>
-      </div>
-      <div class="honors reveal"><strong>A little signal in the noise.</strong><span>Top 0.1% nationally in CBSE Mathematics<br>98th percentile · JEE</span></div>
-    </div></section>
-    <section class="skills" id="skills"><div class="wrap">
-      <div class="section-head reveal"><span class="section-index">05 / Toolkit</span><h2>Methods, machines<br>& <em>molecules.</em></h2></div>
-      <div class="skill-cloud reveal"><span class="skill">Python</span><span class="skill">PyTorch</span><span class="skill">Scikit-learn</span><span class="skill">LangChain</span><span class="skill">SQL</span><span class="skill">C / C++</span><span class="skill">R</span><span class="skill">MATLAB</span><span class="skill">Linux</span><span class="skill">GROMACS</span><span class="skill">AutoDock Vina</span><span class="skill">PyMOL</span><span class="skill">MM-PBSA</span><span class="skill">HADDOCK</span><span class="skill">BLAST</span><span class="skill">PCR</span><span class="skill">ELISA</span><span class="skill">Western Blot</span><span class="skill">LFA Development</span><span class="skill">SELEX</span></div>
-    </div></section>
-    <section class="contact" id="contact"><div class="wrap">
-      <div class="section-head reveal"><span class="section-index">06 / Contact</span><h2>Let’s make something <em>alive.</em></h2></div>
-      <div class="reveal"><a class="contact-row" href="mailto:anirudhankrishnan007@gmail.com"><span>anirudhankrishnan007@gmail.com</span><span>↗</span></a><a class="contact-row" href="https://linkedin.com/in/anirudhank" target="_blank" rel="noopener"><span>LinkedIn / anirudhank</span><span>↗</span></a><a class="contact-row" href="https://github.com/Anirudhan007" target="_blank" rel="noopener"><span>GitHub / Anirudhan007</span><span>↗</span></a><a class="contact-row" href="https://cal.com/anirudhan/coffee-chat" target="_blank" rel="noopener"><span>Book a coffee chat</span><span>↗</span></a></div>
-    </div></section>
-  </main>
-  <footer><span>© 2026 Anirudhan Krishnan</span><span>Bioengineering × AI · Chennai to Heidelberg</span></footer>
-  <script>
-    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const nav = document.querySelector('nav'), progress = document.querySelector('.progress');
-    addEventListener('scroll', () => { const y = scrollY; nav.classList.toggle('scrolled', y > 20); progress.style.width = `${y / (document.documentElement.scrollHeight - innerHeight) * 100}%`; }, {passive:true});
-    const menu = document.querySelector('.menu'), links = document.querySelector('.nav-links');
-    menu.addEventListener('click', () => { const open = links.classList.toggle('open'); menu.setAttribute('aria-expanded', open); menu.textContent = open ? 'Close' : 'Menu'; });
-    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { links.classList.remove('open'); menu.setAttribute('aria-expanded','false'); menu.textContent='Menu'; }));
-    const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); observer.unobserve(e.target); } }), {threshold:.12, rootMargin:'0px 0px -40px'});
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    if(!reduceMotion && matchMedia('(pointer:fine)').matches){
-      const cursor = document.querySelector('.cursor'); let x=0,y=0,cx=0,cy=0;
-      addEventListener('mousemove',e=>{x=e.clientX;y=e.clientY});
-      document.querySelectorAll('a,button,.project,.job,.skill').forEach(el=>{el.addEventListener('mouseenter',()=>cursor.classList.add('big'));el.addEventListener('mouseleave',()=>cursor.classList.remove('big'))});
-      (function move(){cx+=(x-cx)*.18;cy+=(y-cy)*.18;cursor.style.left=cx+'px';cursor.style.top=cy+'px';requestAnimationFrame(move)})();
-      document.querySelectorAll('.magnetic').forEach(el=>{el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.12}px,${(e.clientY-r.top-r.height/2)*.18}px)`});el.addEventListener('mouseleave',()=>el.style.transform='')});
-    }
-  </script>
-</body>
-</html>
