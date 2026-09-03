@@ -1,6 +1,9 @@
 const mobile = window.matchMedia("(max-width: 820px)").matches;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const count = mobile ? 18000 : 56000;
+const cappedDpr = Math.min(window.devicePixelRatio || 1, 2);
+// Mobile phones need denser/brighter points; ShaderMaterial does not auto-scale gl_PointSize by DPR.
+const count = mobile ? 36000 : 56000;
+const basePointSize = (mobile ? 52 : 46) * cappedDpr;
 
 const menuButton = document.querySelector(".menu-button");
 const nav = document.querySelector(".nav");
@@ -113,7 +116,7 @@ function startOrganism() {
     return;
   }
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(cappedDpr);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene = new THREE.Scene();
@@ -157,26 +160,30 @@ function startOrganism() {
 
   function cortex() {
     const positions = new Float32Array(count * 3);
-    const centres = Array.from({ length: 14 }, () => {
-      const y = random();
-      const angle = Math.random() * Math.PI * 2;
-      const radius = Math.sqrt(1 - y * y) * 6.2;
-      return [Math.cos(angle) * radius, y * 6.2, Math.sin(angle) * radius];
+    const lobeCount = 10;
+    const centres = Array.from({ length: lobeCount }, (_, index) => {
+      const y = ((index % 5) / 4) * 2 - 1;
+      const angle = (index / lobeCount) * Math.PI * 2 + (index % 2) * 0.35;
+      const radius = Math.sqrt(Math.max(0, 1 - y * y)) * 5.4;
+      return [Math.cos(angle) * radius, y * 5.6, Math.sin(angle) * radius];
     });
 
     for (let index = 0; index < count; index += 1) {
-      if (index % 3 === 0) {
-        const from = centres[(Math.random() * centres.length) | 0];
-        const to = centres[(Math.random() * centres.length) | 0];
+      if (index % 4 === 0) {
+        const fromIndex = (Math.random() * lobeCount) | 0;
+        const toIndex = (fromIndex + 1 + ((Math.random() * 3) | 0)) % lobeCount;
+        const from = centres[fromIndex];
+        const to = centres[toIndex];
         const t = Math.random();
-        const bend = 1 + Math.sin(t * Math.PI) * 0.28;
+        const bend = 1 + Math.sin(t * Math.PI) * 0.18;
         for (let axis = 0; axis < 3; axis += 1) {
-          positions[index * 3 + axis] = (from[axis] + (to[axis] - from[axis]) * t) * bend + random(0.14);
+          positions[index * 3 + axis] = (from[axis] + (to[axis] - from[axis]) * t) * bend + random(0.06);
         }
       } else {
-        const centre = centres[(Math.random() * centres.length) | 0];
+        const centre = centres[(Math.random() * lobeCount) | 0];
+        const tight = gaussian() * 0.42;
         for (let axis = 0; axis < 3; axis += 1) {
-          positions[index * 3 + axis] = centre[axis] + gaussian() * 0.85;
+          positions[index * 3 + axis] = centre[axis] + tight;
         }
       }
     }
@@ -185,19 +192,68 @@ function startOrganism() {
 
   function lattice() {
     const positions = new Float32Array(count * 3);
+    const halfX = 6.4;
+    const halfY = 5.0;
+    const halfZ = 6.4;
+    const faceGrid = 6;
+
     for (let index = 0; index < count; index += 1) {
-      if (index % 7 === 0) {
-        positions[index * 3] = ((((Math.random() * 44) | 0) / 44) * 2 - 1) * 7.2;
-        positions[index * 3 + 1] = random(5.4);
-        positions[index * 3 + 2] = ((((Math.random() * 44) | 0) / 44) * 2 - 1) * 7.2;
+      const mode = index % 10;
+      if (mode < 6) {
+        // Strong cube edges — this is what makes the "box" readable.
+        const edge = (Math.random() * 12) | 0;
+        const t = Math.random() * 2 - 1;
+        let x = 0;
+        let y = 0;
+        let z = 0;
+        if (edge < 4) {
+          y = edge < 2 ? halfY : -halfY;
+          z = edge % 2 === 0 ? halfZ : -halfZ;
+          x = t * halfX;
+        } else if (edge < 8) {
+          x = edge < 6 ? halfX : -halfX;
+          z = edge % 2 === 0 ? halfZ : -halfZ;
+          y = t * halfY;
+        } else {
+          x = edge < 10 ? halfX : -halfX;
+          y = edge % 2 === 0 ? halfY : -halfY;
+          z = t * halfZ;
+        }
+        positions[index * 3] = x + random(0.03);
+        positions[index * 3 + 1] = y + random(0.03);
+        positions[index * 3 + 2] = z + random(0.03);
+      } else if (mode < 9) {
+        // Face grid lines so the faces read as a box, not fog.
+        const face = (Math.random() * 6) | 0;
+        const u = (((Math.random() * faceGrid) | 0) / (faceGrid - 1)) * 2 - 1;
+        const v = Math.random() * 2 - 1;
+        let x = 0;
+        let y = 0;
+        let z = 0;
+        if (face === 0 || face === 1) {
+          x = face === 0 ? halfX : -halfX;
+          y = u * halfY;
+          z = v * halfZ;
+        } else if (face === 2 || face === 3) {
+          y = face === 2 ? halfY : -halfY;
+          x = u * halfX;
+          z = v * halfZ;
+        } else {
+          z = face === 4 ? halfZ : -halfZ;
+          x = u * halfX;
+          y = v * halfY;
+        }
+        positions[index * 3] = x + random(0.025);
+        positions[index * 3 + 1] = y + random(0.025);
+        positions[index * 3 + 2] = z + random(0.025);
       } else {
-        const layer = (Math.random() * 6) | 0;
-        const fixed = (((Math.random() * 44) | 0) / 44) * 2 - 1;
-        const free = random();
-        const alongX = Math.random() < 0.5;
-        positions[index * 3] = (alongX ? free : fixed) * 7.2 + random(0.03);
-        positions[index * 3 + 1] = (layer - 2.5) * 1.8 + random(0.05);
-        positions[index * 3 + 2] = (alongX ? fixed : free) * 7.2 + random(0.03);
+        // Sparse interior points only — keeps depth without washing out the box.
+        const gx = (((Math.random() * 5) | 0) / 4) * 2 - 1;
+        const gy = (((Math.random() * 5) | 0) / 4) * 2 - 1;
+        const gz = (((Math.random() * 5) | 0) / 4) * 2 - 1;
+        positions[index * 3] = gx * halfX * 0.72 + random(0.02);
+        positions[index * 3 + 1] = gy * halfY * 0.72 + random(0.02);
+        positions[index * 3 + 2] = gz * halfZ * 0.72 + random(0.02);
       }
     }
     return positions;
@@ -209,11 +265,11 @@ function startOrganism() {
       const t = (index / count) * Math.PI * 2;
       const radius = Math.cos(5 * t) + 2;
       const centre = [
-        radius * Math.cos(3 * t) * 1.67,
-        radius * Math.sin(3 * t) * 1.67,
-        -Math.sin(5 * t) * 2.5
+        radius * Math.cos(3 * t) * 1.85,
+        radius * Math.sin(3 * t) * 1.85,
+        -Math.sin(5 * t) * 2.8
       ];
-      const spread = Math.cbrt(Math.random()) * 1.15;
+      const spread = Math.cbrt(Math.random()) * 0.55;
       const y = random();
       const angle = Math.random() * Math.PI * 2;
       const ring = Math.sqrt(1 - y * y);
@@ -270,7 +326,7 @@ function startOrganism() {
   const uniforms = {
     uTime: { value: 0 },
     uMorph: { value: 0 },
-    uSize: { value: mobile ? 34 : 46 },
+    uSize: { value: basePointSize },
     uColA: { value: palette[0].clone() },
     uColB: { value: palette[1].clone() },
     uMix: { value: 0 },
@@ -316,7 +372,7 @@ function startOrganism() {
         vec3 color = mix(uColA, uColB, uMix);
         float spark = step(.985, fract(vRand * 91.7 + uTime * .35));
         color = mix(color, vec3(1.0), spark * .85) * (.72 + vRand * .55);
-        gl_FragColor = vec4(color, alpha * vFade * .85);
+        gl_FragColor = vec4(color, alpha * vFade * 1.0);
       }
     `
   });
