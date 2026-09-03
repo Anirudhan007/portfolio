@@ -75,16 +75,21 @@ if (messageForm) {
   const status = messageForm.querySelector(".form-status");
   const submit = messageForm.querySelector("button[type='submit']");
 
-  if (new URLSearchParams(window.location.search).get("sent") === "1") {
+  if (status && new URLSearchParams(window.location.search).get("sent") === "1") {
     status.textContent = "Message sent. Thank you.";
     window.history.replaceState({}, "", `${window.location.pathname}#contact`);
   }
 
-  messageForm.addEventListener("submit", () => {
-    if (!messageForm.reportValidity()) return;
-    submit.disabled = true;
-    submit.textContent = "Sending";
-    status.textContent = "Opening verification.";
+  messageForm.addEventListener("submit", (event) => {
+    if (!messageForm.reportValidity()) {
+      event.preventDefault();
+      return;
+    }
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = "Sending";
+    }
+    if (status) status.textContent = "Opening verification.";
   });
 }
 

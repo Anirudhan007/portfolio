@@ -364,7 +364,7 @@ section:nth-child(even) .actions {
   transition: background 220ms ease, color 220ms ease;
 }
 
-.button::after {
+a.button::after {
   content: "↗";
   font-size: 0.8rem;
 }
