@@ -83,8 +83,8 @@
     .hello { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; padding: 5vh 26px 40vh; max-width: 1000px; margin: 0 auto; width: 100%; }
     .hello h1 { font-size: clamp(3.2rem, 7vw, 6rem); font-weight: 700; line-height: .95; letter-spacing: -.055em; text-shadow: 0 6px 40px rgba(7,11,36,.6); }
         @keyframes wave { 0%,60%,100% { transform: rotate(0); } 10%,30% { transform: rotate(16deg); } 20%,40% { transform: rotate(-8deg); } }
-    .hello p { margin-top: 22px; font-size: clamp(1.1rem, 2.2vw, 1.4rem); color: #d7d9f3; max-width: 34ch; line-height: 1.45; }
-    .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+    .hello p { margin-top: 22px; font-size: clamp(1.1rem, 2.2vw, 1.4rem); color: #d7d9f3; max-width: none; line-height: 1.45; white-space: nowrap; }
+    .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 64px; }
     .btn { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; padding: 14px 20px; border-radius: 999px; border: 1px solid var(--ink); font: 500 .95rem var(--sans); text-decoration: none; color: var(--ink); background: rgba(12,18,51,.35); backdrop-filter: blur(6px); transition: transform .15s ease, background .2s ease, color .2s ease; }
     .btn:hover { transform: translateY(-2px); }
     .hbtn {
@@ -226,6 +226,7 @@
       .hero { --horizon: 82%; }
       .skyline, .reflection { height: 29vh; }
       .hello h1 { font-size: clamp(2.8rem, 13vw, 4rem); }
+      .hello p { white-space: normal; }
       .hello { padding-top: 5vh; padding-bottom: 46vh; }
       .top .where { display: none; }
       .letter { grid-template-columns: 1fr; padding: 22px 20px 18px; }
