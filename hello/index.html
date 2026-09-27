@@ -39,8 +39,18 @@
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
     *, *::before, *::after { box-sizing: inherit; margin: 0; padding: 0; }
-    html { background: var(--black); scroll-behavior: smooth; scroll-padding-top: env(safe-area-inset-top, 0px); }
-    body { background: var(--black); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    html { background: #120818; scroll-behavior: smooth; scroll-padding-top: env(safe-area-inset-top, 0px); }
+    body { background: #120818; color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    .night {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+      background:
+        radial-gradient(72vw 52vh at 10% 16%, rgba(255,111,174,.46), transparent 64%),
+        radial-gradient(64vw 58vh at 92% 6%, rgba(255,180,138,.38), transparent 60%),
+        radial-gradient(58vw 48vh at 76% 82%, rgba(255,111,174,.30), transparent 62%),
+        radial-gradient(48vw 42vh at 6% 90%, rgba(255,196,143,.26), transparent 58%),
+        linear-gradient(165deg, #140c1c 0%, #2c1428 32%, #3d1a30 54%, #221018 78%, #10080e 100%);
+    }
+    .night canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
     a { color: inherit; }
     :focus-visible { outline: 2px solid var(--pink); outline-offset: 4px; border-radius: 6px; }
     ::selection { background: var(--pink); color: var(--black); }
@@ -48,7 +58,7 @@
     /* ================= Hero: New York at golden hour ================= */
     .hero {
       --horizon: 84%;
-      position: relative; min-height: 100svh; overflow: hidden; display: flex; flex-direction: column;
+      position: relative; z-index: 1; min-height: 100svh; overflow: hidden; display: flex; flex-direction: column;
       background: linear-gradient(180deg, #080c2a 0%, #1a1d55 24%, #4b3a82 42%, #a8649a 62%, #f0928a 72%, #ffc58f 79%, #ffe2a8 var(--horizon), #1b1f52 var(--horizon));
     }
     #stars { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -97,8 +107,8 @@
     .btn.pink { background: var(--pink); border-color: var(--pink); color: var(--black); font-weight: 700; }
 
     /* ================= Below the hero: pink and black ================= */
-    main { position: relative; background: radial-gradient(1200px 500px at 85% 0%, rgba(255,111,174,.14), transparent 60%), radial-gradient(900px 500px at 0% 55%, rgba(255,180,138,.08), transparent 60%), var(--black); }
-    main::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 120px; background: linear-gradient(#140d16, transparent); pointer-events: none; }
+    main { position: relative; z-index: 1; background: transparent; }
+    main::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 180px; background: linear-gradient(#140d16, transparent); pointer-events: none; }
     .wrap { width: min(1080px, 100%); margin: 0 auto; padding: 0 26px; position: relative; }
     section.wrap { padding-top: clamp(84px, 10vw, 130px); padding-bottom: 0; }
     section.wrap#me { padding-top: clamp(64px, 8vw, 100px); }
@@ -246,6 +256,7 @@
   </style>
 </head>
 <body>
+  <div class="night" aria-hidden="true"><canvas id="night-stars"></canvas></div>
 
   <header class="hero">
     <canvas id="stars" aria-hidden="true"></canvas>
@@ -575,6 +586,44 @@
         if (!still && running) requestAnimationFrame(frame);
       };
       new IntersectionObserver(([e]) => { const was = running; running = e.isIntersecting; if (running && !was && !still) frame(); }).observe(c);
+      addEventListener("resize", () => { size(); if (still) frame(); });
+      size(); frame();
+    })();
+
+    // Sky behind everything below the hero
+    (() => {
+      const c = document.getElementById("night-stars"), x = c.getContext("2d");
+      const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const tint = ["#fff", "#ffe4f2", "#ffe8d4"];
+      let w, h, dpr, stars = [], shots = [], t = 0;
+      const size = () => {
+        dpr = Math.min(devicePixelRatio || 1, 2);
+        const r = c.getBoundingClientRect(); w = c.width = r.width * dpr; h = c.height = r.height * dpr;
+        const n = Math.round(Math.min(170, r.width * r.height / 7800));
+        stars = Array.from({ length: n }, () => ({ x: Math.random() * w, y: Math.random() * h, r: (Math.random() * 1.15 + .25) * dpr, p: Math.random() * 6.28, s: .5 + Math.random() * 1.6, v: (.012 + Math.random() * .035) * dpr, c: tint[Math.random() * tint.length | 0] }));
+      };
+      const frame = () => {
+        t += .016; x.clearRect(0, 0, w, h);
+        for (const s of stars) {
+          if (!still) { s.x -= s.v; if (s.x < -2) s.x = w + 2; }
+          x.globalAlpha = still ? .7 : .32 + .68 * Math.abs(Math.sin(t * s.s + s.p));
+          x.fillStyle = s.c; x.beginPath(); x.arc(s.x, s.y, s.r, 0, 6.283); x.fill();
+        }
+        if (!still) {
+          if (shots.length < 2 && Math.random() < .01) shots.push({ x: Math.random() * w * .65 + w * .3, y: Math.random() * h * .75, l: 0 });
+          for (let i = shots.length - 1; i >= 0; i--) {
+            const shoot = shots[i]; shoot.l += 1;
+            const len = 120 * dpr, dx = -9 * dpr * shoot.l, dy = 3.6 * dpr * shoot.l;
+            const g = x.createLinearGradient(shoot.x + dx, shoot.y + dy, shoot.x + dx + len, shoot.y + dy - len * .35);
+            g.addColorStop(0, "rgba(255,248,252,.95)"); g.addColorStop(.4, "rgba(255,176,206,.6)"); g.addColorStop(1, "rgba(255,176,206,0)");
+            x.globalAlpha = Math.max(0, 1 - shoot.l / 40); x.strokeStyle = g; x.lineWidth = 1.5 * dpr;
+            x.beginPath(); x.moveTo(shoot.x + dx, shoot.y + dy); x.lineTo(shoot.x + dx + len, shoot.y + dy - len * .35); x.stroke();
+            if (shoot.l > 40) shots.splice(i, 1);
+          }
+        }
+        x.globalAlpha = 1;
+        if (!still) requestAnimationFrame(frame);
+      };
       addEventListener("resize", () => { size(); if (still) frame(); });
       size(); frame();
     })();
