@@ -178,13 +178,10 @@
     .lt { display: flex; justify-content: space-between; align-items: flex-end; gap: 14px; position: relative; z-index: 1; }
     .letter .hey { font-size: clamp(2.4rem, 5vw, 3.2rem); font-weight: 700; letter-spacing: -.045em; line-height: 1; max-width: 8ch; }
     .letter p { font-size: 1.05rem; line-height: 1.6; color: rgba(26,11,20,.85); position: relative; z-index: 1; }
-    .next { list-style: none; display: grid; gap: 8px; margin-top: 4px; position: relative; z-index: 1; }
-    .next li { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,.35); border-radius: 14px; padding: 9px 12px; font-weight: 500; }
-    .next b { width: 28px; height: 28px; border-radius: 50%; background: #1a0b14; color: var(--peach); display: grid; place-items: center; font-size: .85rem; flex: none; }
     .letter .sign { margin-top: auto; padding-top: 12px; position: relative; z-index: 1; }
     .letter .script { display: block; font: 700 2.6rem/1 "Caveat", cursive; color: #1a0b14; transform: rotate(-3deg); transform-origin: left; }
     .letter .role { display: block; font: .7rem var(--mono); color: rgba(26,11,20,.7); margin-top: 6px; }
-    form.you { padding: clamp(24px, 4vw, 44px); position: relative; }
+    form.you { padding: clamp(24px, 4vw, 44px); position: relative; min-width: 0; }
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .full { grid-column: 1 / -1; }
     label { display: block; }
@@ -194,9 +191,17 @@
     input::placeholder, textarea::placeholder { color: #6e5864; }
     input:focus, textarea:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255,111,174,.2); }
     textarea { min-height: 90px; resize: vertical; }
-    fieldset { border: 0; }
+    fieldset { border: 0; min-width: 0; }
     legend { font-size: .9rem; color: var(--soft); margin-bottom: 10px; }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chips {
+      display: flex; flex-direction: column; gap: 8px; overflow-x: auto; overscroll-behavior-x: contain; max-width: 100%;
+      padding-bottom: 8px; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin; scrollbar-color: rgba(255,190,220,.4) transparent;
+    }
+    .chip-row { display: flex; gap: 8px; width: max-content; }
+    .chips::-webkit-scrollbar { height: 6px; }
+    .chips::-webkit-scrollbar-thumb { background: rgba(255,190,220,.4); border-radius: 99px; }
+    .chip { scroll-snap-align: start; white-space: nowrap; }
     .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
     .chip span { display: inline-block; padding: 8px 13px; border-radius: 999px; border: 1px solid var(--line); font-size: .9rem; cursor: pointer; user-select: none; transition: background .15s, color .15s, border-color .15s; }
     .chip input:checked + span { background: var(--pink); color: var(--black); border-color: var(--pink); font-weight: 500; }
@@ -302,11 +307,6 @@
           </div>
           <p>I've moved countries a few times now, and every time I've learned the same thing: the best part of any new place is its people.</p>
           <p>So whether you're new to LMU like me or you've been here for years, I'd really love to know you. Tell me a little about yourself and I'll message you personally.</p>
-          <ol class="next">
-            <li><b>1</b><span>You send this</span></li>
-            <li><b>2</b><span>I message you</span></li>
-            <li><b>3</b><span>We grab a coffee ☕</span></li>
-          </ol>
           <div class="sign">
             <span class="script">Anirudh</span>
             <span class="role">MSc Molecular and Cellular Biology, LMU Munich</span>
@@ -469,11 +469,13 @@
 
     // Interest chips
     const chipBox = document.getElementById("chips");
-    INTERESTS.forEach(t => {
+    const chipRows = [0, 1].map(() => { const row = document.createElement("div"); row.className = "chip-row"; chipBox.append(row); return row; });
+    const splitAt = Math.ceil(INTERESTS.length / 2);
+    INTERESTS.forEach((t, n) => {
       const l = document.createElement("label"); l.className = "chip";
       const i = document.createElement("input"); i.type = "checkbox"; i.name = "interests"; i.value = t;
       const s = document.createElement("span"); s.textContent = t;
-      l.append(i, s); chipBox.append(l);
+      l.append(i, s); chipRows[n < splitAt ? 0 : 1].append(l);
     });
 
     // Socials
