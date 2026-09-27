@@ -168,60 +168,43 @@
 
     /* Connect */
     .connect {
-      display: grid; grid-template-columns: minmax(220px, 26%) minmax(0, 1fr);
-      width: min(1340px, calc(100vw - 36px)); margin-top: 40px; margin-left: 50%; transform: translateX(-50%);
-      border-radius: 30px; overflow: hidden; border: 1px solid var(--line); background: var(--panel);
+      margin-top: 28px; border-radius: 28px; overflow: hidden;
+      border: 1px solid var(--line); background: rgba(23, 16, 20, .88);
     }
     .letter {
-      position: relative; overflow: hidden; color: #1a0b14;
-      background: radial-gradient(circle at 110% -10%, rgba(255,255,255,.35), transparent 40%), linear-gradient(165deg, var(--pink) 0%, #ff8f9c 55%, var(--peach) 100%);
-      padding: 22px 18px; display: flex; flex-direction: column; gap: 12px;
-    }
-    .letter::after {
-      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .25;
-      background: repeating-linear-gradient(180deg, transparent 0 33px, rgba(26,11,20,.18) 33px 34px);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 30%, #000 60%); mask-image: linear-gradient(to bottom, transparent 30%, #000 60%);
+      display: grid; grid-template-columns: auto 1fr; gap: 8px 26px; align-items: center;
+      color: #1a0b14; padding: 28px 32px 24px;
+      background: linear-gradient(120deg, #ff6fae 0%, #ff8f9c 48%, #ffc08a 100%);
     }
     .polaroid {
-      width: 104px; flex: none; background: #fff; padding: 7px 7px 0; margin: 0 -4px 0 0;
-      transform: rotate(5deg); box-shadow: 0 14px 30px -10px rgba(26,11,20,.55); position: relative; z-index: 1;
+      position: relative; grid-row: 1 / span 2; width: 112px; background: #fff; padding: 8px 8px 0;
+      transform: rotate(-3deg); box-shadow: 0 12px 24px -12px rgba(26,11,20,.45);
     }
-    .polaroid::before { content: ""; position: absolute; top: -10px; left: 50%; width: 62px; height: 20px; transform: translateX(-50%) rotate(-4deg); background: rgba(255,255,255,.55); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+    .polaroid::before { content: ""; position: absolute; top: -9px; left: 50%; width: 54px; height: 16px; transform: translateX(-50%) rotate(-3deg); background: rgba(255,255,255,.6); }
     .polaroid img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: #eee; }
-    .polaroid figcaption { font: 700 1.15rem "Caveat", cursive; white-space: nowrap; text-align: center; padding: 4px 0 6px; color: #333; }
-    .lt { display: flex; justify-content: space-between; align-items: flex-end; gap: 14px; position: relative; z-index: 1; }
-    .letter .hey { font-size: clamp(2rem, 2.4vw, 2.6rem); font-weight: 700; letter-spacing: -.045em; line-height: 1; }
-    .letter p { font-size: clamp(1.2rem, 1.35vw, 1.42rem); line-height: 1.35; color: rgba(26,11,20,.85); position: relative; z-index: 1; }
-    .letter .sign { margin-top: auto; padding-top: 12px; position: relative; z-index: 1; }
-    .letter .script { display: block; font: 700 2.6rem/1 "Caveat", cursive; color: #1a0b14; transform: rotate(-3deg); transform-origin: left; }
-    .letter .role { display: block; font: .7rem var(--mono); color: rgba(26,11,20,.7); margin-top: 6px; }
-    form.you { padding: 20px 22px 18px; position: relative; min-width: 0; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; }
-    .full { grid-column: 1 / -1; }
+    .polaroid figcaption { font: 700 1.05rem "Caveat", cursive; text-align: center; padding: 3px 0 6px; color: #333; }
+    .letter .hey { font-size: clamp(1.8rem, 3vw, 2.35rem); font-weight: 700; letter-spacing: -.04em; line-height: 1; }
+    .letter p { margin-top: 8px; font-size: 1.05rem; line-height: 1.5; max-width: 46ch; color: rgba(26,11,20,.82); }
+    .letter .sign { grid-column: 2; }
+    .letter .script { font: 700 2.1rem/1 "Caveat", cursive; color: #1a0b14; }
+    .letter .role { display: block; margin-top: 4px; font: .68rem var(--mono); color: rgba(26,11,20,.62); }
+    form.you { position: relative; padding: 26px 32px 28px; display: flex; flex-direction: column; gap: 26px; }
+    .ask { display: flex; flex-direction: column; gap: 12px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
     label { display: block; }
-    label > span { display: block; font-size: .9rem; color: var(--soft); margin-bottom: 5px; }
-    label > span em, legend em { font-style: normal; color: var(--mute); font-size: .8rem; }
-    input, textarea { width: 100%; font: 1rem var(--sans); color: var(--ink); background: var(--black); border: 1px solid var(--line); border-radius: 14px; padding: 10px 13px; }
+    label > span { display: block; font-size: .92rem; color: var(--soft); margin-bottom: 7px; }
+    label > span em, .sub em { font-style: normal; color: var(--mute); font-size: .82rem; }
+    input, textarea { width: 100%; font: 1rem var(--sans); color: var(--ink); background: rgba(11,7,9,.72); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
     input::placeholder, textarea::placeholder { color: #6e5864; }
     input:focus, textarea:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255,111,174,.2); }
-    textarea { min-height: 64px; resize: vertical; }
-    fieldset { border: 0; min-width: 0; }
-    legend { font-size: .9rem; color: var(--soft); margin-bottom: 6px; }
-    .chips {
-      display: flex; flex-direction: column; gap: 8px; overflow-x: auto; overscroll-behavior-x: contain; max-width: 100%;
-      padding-bottom: 8px; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin; scrollbar-color: rgba(255,190,220,.4) transparent;
-    }
-    .chip-row { display: flex; gap: 8px; width: max-content; }
-    .chips::-webkit-scrollbar { height: 6px; }
-    .chips::-webkit-scrollbar-thumb { background: rgba(255,190,220,.4); border-radius: 99px; }
-    .chip { scroll-snap-align: start; white-space: nowrap; }
+    textarea { min-height: 88px; resize: vertical; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-    .chip span { display: inline-block; padding: 8px 13px; border-radius: 999px; border: 1px solid var(--line); font-size: .9rem; cursor: pointer; user-select: none; transition: background .15s, color .15s, border-color .15s; }
+    .chip span { display: inline-block; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); font-size: .92rem; cursor: pointer; user-select: none; transition: background .15s, color .15s, border-color .15s; }
     .chip input:checked + span { background: var(--pink); color: var(--black); border-color: var(--pink); font-weight: 500; }
     .chip input:focus-visible + span { outline: 2px solid var(--pink); outline-offset: 3px; }
-    .sub { font: .7rem var(--mono); color: var(--pink); letter-spacing: .06em; margin: 8px 0 -4px; }
-    .form-end { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 14px; }
+    .sub { font: .72rem var(--mono); color: var(--pink); letter-spacing: .06em; }
+    .form-end { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
     .note { color: var(--mute); font-size: .85rem; }
     .status { font-size: .95rem; width: 100%; }
     .status.err { color: #ff9ab8; }
@@ -248,10 +231,10 @@
       .hello h1 { font-size: clamp(2.8rem, 13vw, 4rem); }
       .hello { padding-top: 5vh; padding-bottom: 46vh; }
       .top .where { display: none; }
-      .connect { grid-template-columns: 1fr; width: min(1340px, calc(100vw - 28px)); }
-      .letter { padding: 22px 20px; }
-      .letter p { font-size: 1.2rem; }
-      .polaroid { width: 96px; }
+      .letter { grid-template-columns: 1fr; padding: 22px 20px 18px; }
+      .polaroid { grid-row: auto; width: 96px; }
+      .letter .sign { grid-column: auto; }
+      form.you { padding: 22px 20px 24px; gap: 22px; }
       .grid { grid-template-columns: 1fr; }
       .arrow { width: 48px; height: 48px; }
     }
@@ -315,15 +298,14 @@
 
       <div class="connect">
         <aside class="letter">
-          <div class="lt">
-            <span class="hey">Hey you!</span>
-            <figure class="polaroid">
-              <img id="polaroidImg" alt="Anirudh smiling by a mountain river">
-              <figcaption>that's me 👋</figcaption>
-            </figure>
+          <figure class="polaroid">
+            <img id="polaroidImg" alt="Anirudh smiling by a mountain river">
+            <figcaption>that's me</figcaption>
+          </figure>
+          <div>
+            <p class="hey">Hey you!</p>
+            <p>The best part of a new place is its people. Tell me a little about yourself, and I'll message you.</p>
           </div>
-          <p>I've moved countries a few times now, and every time I've learned the same thing: the best part of any new place is its people.</p>
-          <p>So whether you're new to LMU like me or you've been here for years, I'd really love to know you. Tell me a little about yourself and I'll message you personally.</p>
           <div class="sign">
             <span class="script">Anirudh</span>
             <span class="role">MSc Molecular and Cellular Biology, LMU Munich</span>
@@ -338,31 +320,39 @@
           <input type="hidden" name="_autoresponse" value="Thanks for saying hi! I got your details and I'll reach out soon. See you in Martinsried. Anirudh">
           <input class="honey" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-          <div class="grid">
-            <p class="sub full">About you</p>
-            <label><span>Your good name</span>
-              <input name="name" type="text" autocomplete="name" maxlength="100" placeholder="What should I call you?"></label>
-            <label><span>What do you do?</span>
-              <input name="what_they_do" type="text" maxlength="150" placeholder="e.g. MSc MCB, first semester"></label>
-            <fieldset class="full">
-              <legend>What are you into? <em>Tap as many as you like</em></legend>
-              <div class="chips" id="chips"></div>
-            </fieldset>
-            <label class="full"><span>Anything else? <em>(research, hobbies, favourite obsession)</em></span>
-              <input name="other_interests" type="text" maxlength="200" placeholder="Neuroscience, bouldering, baking bread…"></label>
-
-            <p class="sub full">Where can I find you? <span style="color:var(--mute)">(at least one)</span></p>
-            <label><span>Instagram</span>
-              <input name="instagram" type="text" maxlength="60" placeholder="@yourhandle" autocapitalize="off"></label>
-            <label><span>LinkedIn</span>
-              <input name="linkedin" type="text" maxlength="200" placeholder="linkedin.com/in/you" autocapitalize="off"></label>
-            <label><span>Email</span>
-              <input name="email" type="email" autocomplete="email" maxlength="160" placeholder="you@example.com"></label>
-            <label><span>WhatsApp</span>
-              <input name="whatsapp" type="tel" autocomplete="tel" maxlength="30" placeholder="+49 …"></label>
-            <label class="full"><span>Anything you want to say? <em>(optional)</em></span>
-              <textarea name="message" maxlength="2000" placeholder="Let's grab a coffee on Monday!"></textarea></label>
+          <div class="ask">
+            <p class="sub">About you</p>
+            <div class="grid">
+              <label><span>Your name</span>
+                <input name="name" type="text" autocomplete="name" maxlength="100" placeholder="What should I call you?"></label>
+              <label><span>What do you do?</span>
+                <input name="what_they_do" type="text" maxlength="150" placeholder="MSc MCB, first semester"></label>
+            </div>
           </div>
+
+          <div class="ask">
+            <p class="sub">What are you into? <em>Tap any</em></p>
+            <div class="chips" id="chips"></div>
+            <label><span>Anything else <em>optional</em></span>
+              <input name="other_interests" type="text" maxlength="200" placeholder="Bouldering, baking, a lab you love…"></label>
+          </div>
+
+          <div class="ask">
+            <p class="sub">Where can I reach you? <em>One is enough</em></p>
+            <div class="grid">
+              <label><span>Instagram</span>
+                <input name="instagram" type="text" maxlength="60" placeholder="@yourhandle" autocapitalize="off"></label>
+              <label><span>LinkedIn</span>
+                <input name="linkedin" type="text" maxlength="200" placeholder="linkedin.com/in/you" autocapitalize="off"></label>
+              <label><span>Email</span>
+                <input name="email" type="email" autocomplete="email" maxlength="160" placeholder="you@example.com"></label>
+              <label><span>WhatsApp</span>
+                <input name="whatsapp" type="tel" autocomplete="tel" maxlength="30" placeholder="+49 …"></label>
+            </div>
+          </div>
+
+          <label><span>A note <em>optional</em></span>
+            <textarea name="message" maxlength="2000" rows="3" placeholder="Coffee on Monday?"></textarea></label>
 
           <div class="form-end">
             <button class="btn pink" type="submit">Send to Anirudh</button>
@@ -486,13 +476,11 @@
 
     // Interest chips
     const chipBox = document.getElementById("chips");
-    const chipRows = [0, 1].map(() => { const row = document.createElement("div"); row.className = "chip-row"; chipBox.append(row); return row; });
-    const splitAt = Math.ceil(INTERESTS.length / 2);
-    INTERESTS.forEach((t, n) => {
+    INTERESTS.forEach(t => {
       const l = document.createElement("label"); l.className = "chip";
       const i = document.createElement("input"); i.type = "checkbox"; i.name = "interests"; i.value = t;
       const s = document.createElement("span"); s.textContent = t;
-      l.append(i, s); chipRows[n < splitAt ? 0 : 1].append(l);
+      l.append(i, s); chipBox.append(l);
     });
 
     // Socials
